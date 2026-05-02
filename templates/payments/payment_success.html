@@ -1,0 +1,14 @@
+<!-- templates/payments/success.html -->
+{% extends 'defaults/base.html' %}
+
+{% block content %}
+<div class="payment_sucess">
+    <div class="card success">
+        <h2>✅ Payment Successful</h2>
+        <p>Your transaction is being processed.</p>
+        <p><strong>Reference:</strong> {{transaction.payment_reference}}</p>
+        <p><strong>Transaction ID:</strong>{{transaction.transaction_id}}</p>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,110 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    color: #333;
+}
+
+/* Navbar */
+.navbar {
+    background: #5c60b9;
+    padding: 15px 30px;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Container */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: 90vh; */
+}
+
+/* Card */
+.card {
+    background: white;
+    padding: 30px;
+    width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Form */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* Button */
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background: #5c60b9;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background: #0b5ed7;
+}
+
+/* Success */
+.payment_success {
+    margin:0 auto;
+    height: 80vh;
+}
+.success {
+    text-align: center;
+}
+
+.success h2 {
+    color: green;
+}
+
+.logo {
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.is_logo {
+    width: 40px;
+    height: 40px;
+    background-image: url("../images/nsempasend_logo.jpg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.logo_text a {
+    font-size: 24px;
+    font-weight: bold;
+    color: whitesmoke;
+    text-decoration: none;
+}

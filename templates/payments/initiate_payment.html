@@ -1,0 +1,49 @@
+<!-- templates/payments/form.html -->
+{% extends 'defaults/base.html' %}
+
+{% block content %}
+<div class="card">
+    <h2>Send Money</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Sender Name</label>
+            {{ form.sender_name }}
+        </div>
+
+        <div class="form-group">
+            <label>Sender Email</label>
+            {{ form.sender_email }}
+        </div>
+
+        <div class="form-group">
+            <label>Sender Phone</label>
+            {{ form.sender_contact }}
+        </div>
+
+        <div class="form-group">
+            <label>Recipient Name</label>
+            {{ form.recipient_name }}
+        </div>
+
+        <div class="form-group">
+            <label>Recipient Contact</label>
+            {{ form.recipient_contact }}
+        </div>
+
+        <div class="form-group">
+            <label>Amount</label>
+            {{ form.amount }}
+        </div>
+
+        <div class="form-group">
+            <label>Payment Reference</label>
+            {{ form.payment_reference }}
+        </div>
+
+        <button type="submit" class="btn-primary">Proceed to Pay</button>
+    </form>
+</div>
+{% endblock %}

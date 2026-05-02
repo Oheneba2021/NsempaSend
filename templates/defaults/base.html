@@ -1,0 +1,30 @@
+<!-- templates/base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Send Money</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <div class = "is_logo"> 
+            </div>
+            <div class =logo_text>
+                <a href="{% url 'initiate_payment' %}"><h3>Mobile Money Transfer</h3></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container ">
+        {% block content %}{% endblock %}
+    </div>
+
+</body>
+
+</html>
