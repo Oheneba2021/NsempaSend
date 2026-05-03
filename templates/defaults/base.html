@@ -7,16 +7,19 @@
     <meta charset="UTF-8">
     <title>Send Money</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/remittance.css' %}">
 </head>
 
 <body>
 
     <nav class="navbar">
         <div class="logo">
-            <div class = "is_logo"> 
+            <div class="is_logo">
             </div>
-            <div class =logo_text>
-                <a href="{% url 'initiate_payment' %}"><h3>Mobile Money Transfer</h3></a>
+            <div class=logo_text>
+                <a href="{% url 'initiate_payment' %}">
+                    <h3>Mobile Money Transfer</h3>
+                </a>
             </div>
         </div>
     </nav>

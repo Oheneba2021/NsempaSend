@@ -1,49 +1,129 @@
-<!-- templates/payments/form.html -->
 {% extends 'defaults/base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="card">
-    <h2>Send Money</h2>
 
-    <form method="post">
-        {% csrf_token %}
+<div class="page-wrapper">
 
-        <div class="form-group">
-            <label>Sender Name</label>
-            {{ form.sender_name }}
+    <div class="card">
+
+        <!-- LEFT: FORM -->
+        <div class="form-section">
+            <h2>Send Money</h2>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label>Sender Name</label>
+                    {{ form.sender_name }}
+                </div>
+
+                <div class="form-group">
+                    <label>Sender Email</label>
+                    {{ form.sender_email }}
+                </div>
+
+                <div class="form-group">
+                    <label>Sender Phone</label>
+                    {{ form.sender_contact }}
+                </div>
+
+                <div class="form-group">
+                    <label>Recipient Name</label>
+                    {{ form.recipient_name }}
+                </div>
+
+                <div class="form-group">
+                    <label>Recipient Contact</label>
+                    {{ form.recipient_contact }}
+                </div>
+
+                <div class="form-group">
+                    <label>Amount</label>
+                    {{ form.amount }}
+                </div>
+
+                <div class="form-group">
+                    <label>Currency</label>
+                    {{ form.currency }}
+                </div>
+
+                <div class="form-group">
+                    <label>Payment Reference</label>
+                    {{ form.payment_reference }}
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    Proceed to Pay
+                </button>
+            </form>
         </div>
 
-        <div class="form-group">
-            <label>Sender Email</label>
-            {{ form.sender_email }}
+        <!-- RIGHT: SUMMARY -->
+        <div class="summary-section">
+            <h3>Transaction Summary</h3>
+
+            <div class="summary-item">
+                <span>You Send</span>
+                <strong id="send_amount">0</strong>
+            </div>
+
+            <div class="summary-item">
+                <span>Exchange Rate</span>
+                <strong id="rate">--</strong>
+            </div>
+
+            <div class="summary-item">
+                <span>Converted (GHS)</span>
+                <strong id="converted">0</strong>
+            </div>
+
+            <div class="summary-item">
+                <span>Fee</span>
+                <strong id="fee">0</strong>
+            </div>
+
+            <hr>
+
+            <div class="recipient-box">
+                <p>Recipient Gets</p>
+                <h1 id="recipient">0 GHS</h1>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label>Sender Phone</label>
-            {{ form.sender_contact }}
-        </div>
+    </div>
 
-        <div class="form-group">
-            <label>Recipient Name</label>
-            {{ form.recipient_name }}
-        </div>
-
-        <div class="form-group">
-            <label>Recipient Contact</label>
-            {{ form.recipient_contact }}
-        </div>
-
-        <div class="form-group">
-            <label>Amount</label>
-            {{ form.amount }}
-        </div>
-
-        <div class="form-group">
-            <label>Payment Reference</label>
-            {{ form.payment_reference }}
-        </div>
-
-        <button type="submit" class="btn-primary">Proceed to Pay</button>
-    </form>
 </div>
+
+<!-- JS (LIVE CALCULATOR) -->
+<script>
+    const FX_RATES = {
+        EUR: 14.5,
+        GBP: 17.0,
+        USD: 13.2
+    };
+
+    function calculate() {
+        let amount = parseFloat(document.getElementById("id_amount").value) || 0;
+        let currency = document.getElementById("id_currency").value;
+
+        let rate = FX_RATES[currency] || 0;
+
+        let converted = amount * rate;
+        let fee = (converted * 0.03) + 5;
+        let recipient = converted - fee;
+
+        document.getElementById("send_amount").innerText = amount + " " + currency;
+        document.getElementById("rate").innerText = rate;
+        document.getElementById("converted").innerText = converted.toFixed(2);
+        document.getElementById("fee").innerText = fee.toFixed(2);
+        document.getElementById("recipient").innerText = recipient.toFixed(2) + " GHS";
+    }
+
+    document.querySelectorAll("input, select").forEach(el => {
+        el.addEventListener("input", calculate);
+    });
+</script>
+
 {% endblock %}

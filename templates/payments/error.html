@@ -1,1 +1,34 @@
-def
+def{% extends 'defaults/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="error-wrapper">
+
+    <div class="error-card">
+
+        <div class="error-icon">⚠️</div>
+
+        <h1>Something went wrong</h1>
+
+        <p class="error-message">
+            We couldn't complete your transaction. Please try again.
+        </p>
+
+        {% if message %}
+            <div class="error-detail">
+                {{ message }}
+            </div>
+        {% endif %}
+
+        <div class="error-actions">
+            <a href="{% url 'initiate_payment' %}" class="btn-primary">
+                Try Again
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
