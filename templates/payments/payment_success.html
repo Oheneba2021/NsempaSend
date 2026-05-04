@@ -1,14 +1,78 @@
-<!-- templates/payments/success.html -->
 {% extends 'defaults/base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="payment_sucess">
-    <div class="card success">
-        <h2>✅ Payment Successful</h2>
-        <p>Your transaction is being processed.</p>
-        <p><strong>Reference:</strong> {{transaction.payment_reference}}</p>
-        <p><strong>Transaction ID:</strong>{{transaction.transaction_id}}</p>
+<link rel="stylesheet" href="{% static 'css/remittance.css' %}">
+
+<div class="success-wrapper">
+
+    <div class="success-card">
+
+        <!-- Success Icon -->
+        <div class="success-icon">✅</div>
+
+        <h1>Payment Successful</h1>
+        <p class="success-sub">
+            Your transaction has been completed successfully.
+        </p>
+
+        <!-- Transaction Details -->
+        <div class="details">
+
+            <div class="detail-row">
+                <span>Transaction ID</span>
+                <strong>{{ transaction.transaction_id }}</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Sender</span>
+                <strong>{{ transaction.sender_name }}</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Recipient</span>
+                <strong>{{ transaction.recipient_name }}</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Amount Sent</span>
+                <strong>{{ transaction.amount }} {{ transaction.currency }}</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Exchange Rate</span>
+                <strong>{{ transaction.fx_rate }}</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Converted (GHS)</span>
+                <strong>{{ transaction.converted_amount }}</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Fee</span>
+                <strong>{{ transaction.fee }}</strong>
+            </div>
+
+        </div>
+
+        <hr>
+
+        <!-- Highlight -->
+        <div class="recipient-highlight">
+            <p>Recipient Gets</p>
+            <h1>{{ transaction.net_amount }} GHS</h1>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions">
+            <a href="{% url 'initiate_payment' %}" class="btn-primary">
+                Send Another Payment
+            </a>
+        </div>
+
     </div>
+
 </div>
 
 {% endblock %}

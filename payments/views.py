@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from .forms import PaymentForm
 from .models import Transaction
 from decimal import Decimal, ROUND_HALF_UP
-
+from django.core.mail import send_mail
 
 # FX rates (MVP - controlled manually)
 FX_RATES = {
@@ -90,15 +90,70 @@ def initiate_payment(request):
 
     return render(request, 'payments/initiate_payment.html', {'form': form})
 
+import requests
+from django.conf import settings
+from django.shortcuts import render
+
 def payment_callback(request):
     reference = request.GET.get('reference') or request.GET.get('trxref')
 
+    print("REFERENCE:", reference)
+
+    # 🔍 Find transaction
     transaction = Transaction.objects.filter(transaction_id=reference).first()
 
-    if transaction:
-        transaction.status = 'paid'
+    if not transaction:
+        return render(request, 'payments/error.html', {
+            'message': 'Transaction not found'
+        })
+
+    # 🔒 VERIFY with Paystack
+    url = f"https://api.paystack.co/transaction/verify/{reference}"
+
+    headers = {
+        "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
+    }
+
+    response = requests.get(url, headers=headers)
+    res = response.json()
+
+    print("PAYSTACK RESPONSE:", res)
+
+    # ✅ Only mark as paid if VERIFIED
+    if res.get('status') and res['data']['status'] == 'success':
+
+        if transaction.status != 'paid':  # prevent duplicate updates
+            transaction.status = 'paid'
+            transaction.save()
+            print("STATUS UPDATED TO PAID")
+        
+            send_mail(
+            subject='Payment Successful',
+            message=f'''
+Hello {transaction.sender_name},
+
+Your payment was successful.
+
+Transaction ID: {transaction.transaction_id}
+Amount Sent: {transaction.amount} {transaction.currency}
+Recipient: {transaction.recipient_name}
+Recipient Gets: {transaction.net_amount} GHS
+
+Thank you for using our service.
+''',
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[transaction.sender_email],
+            fail_silently=False,
+        )
+        
+        return render(request, 'payments/payment_success.html', {
+            'transaction': transaction
+        })
+
+    else:
+        transaction.status = 'failed'
         transaction.save()
 
-    return render(request, 'payments/payment_success.html', {
-        'transaction': transaction
-    })
+        return render(request, 'payments/error.html', {
+            'message': 'Payment verification failed'
+        })

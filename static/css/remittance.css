@@ -64,7 +64,7 @@ body {
 /* Summary Section */
 .summary-section {
     flex: 1;
-    background: #0f172a;
+    background: #5c60b9;
     color: white;
     padding: 25px;
     border-radius: 12px;
@@ -81,7 +81,7 @@ body {
 }
 
 .summary-item span {
-    color: #94a3b8;
+    color: whitesmoke;
 }
 
 /* Recipient highlight */
@@ -91,7 +91,7 @@ body {
 }
 
 .recipient-box p {
-    color: #94a3b8;
+    color: whitesmoke;
 }
 
 .recipient-box h1 {
@@ -102,7 +102,7 @@ body {
 /* Divider */
 hr {
     border: none;
-    border-top: 1px solid #334155;
+    border-top: 1px solid whitesmoke;
     margin: 20px 0;
 }
 
