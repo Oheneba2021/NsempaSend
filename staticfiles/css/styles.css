@@ -1,0 +1,167 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    color: #333;
+}
+
+/* Navbar */
+.navbar {
+    background: #5c60b9;
+    padding: 15px 30px;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* logo */
+.logo {
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.is_logo {
+    width: 40px;
+    height: 40px;
+    background-image: url("../images/nsempasend_logo.jpg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.logo_text a {
+    font-size: 24px;
+    font-weight: bold;
+    color: whitesmoke;
+    text-decoration: none;
+}
+
+/* Container */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: 90vh; */
+}
+
+/* Card */
+.card {
+    background: white;
+    padding: 30px;
+    width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Form */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* Button */
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background: #5c60b9;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background: #0b5ed7;
+}
+
+/* SUCCESS PAGE */
+.success-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.success-card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+.success-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.success-card h1 {
+    color: #16a34a;
+    margin-bottom: 5px;
+}
+
+.success-sub {
+    color: #6b7280;
+    margin-bottom: 20px;
+}
+
+/* Details */
+.details {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.detail-row span {
+    color: #6b7280;
+}
+
+/* Highlight */
+.recipient-highlight {
+    margin-top: 20px;
+}
+
+.recipient-highlight h1 {
+    color: #22c55e;
+    font-size: 28px;
+}
+
+/* Actions */
+.actions {
+    margin-top: 20px;
+}
+
+.actions .btn-primary {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+}
