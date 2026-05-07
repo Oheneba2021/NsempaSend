@@ -1,6 +1,19 @@
 import uuid
 from django.db import models
 
+import string
+import secrets
+
+def generate_transaction_id():
+    prefix = "NSP"
+    random_part = ''.join(
+        secrets.choice(string.ascii_uppercase + string.digits)
+        for _ in range(8)
+    )
+    return f"{prefix}-{random_part}"
+
+
+
 
 class Transaction(models.Model):
     STATUS_CHOICES = [
@@ -70,10 +83,10 @@ class Transaction(models.Model):
         null=True
     )
 
-    transaction_id = models.UUIDField(
-        default=uuid.uuid4,
-        editable=False,
-        unique=True
+    transaction_id = models.CharField(
+        max_length=12,
+        unique=True,
+        editable=False
     )
 
     status = models.CharField(
@@ -84,5 +97,15 @@ class Transaction(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        if not self.transaction_id:
+            while True:
+                new_id = generate_transaction_id()
+                if not Transaction.objects.filter(transaction_id=new_id).exists():
+                    self.transaction_id = new_id
+                    break
+
+        super().save(*args, **kwargs)
+    
     def __str__(self):
         return f"{self.sender_name} → {self.recipient_name} : {self.amount} {self.currency} ({self.status})"

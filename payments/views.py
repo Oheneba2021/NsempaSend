@@ -5,6 +5,9 @@ from .forms import PaymentForm
 from .models import Transaction
 from decimal import Decimal, ROUND_HALF_UP
 from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.core.mail import EmailMultiAlternatives
 
 # FX rates (MVP - controlled manually)
 FX_RATES = {
@@ -127,24 +130,25 @@ def payment_callback(request):
             transaction.save()
             print("STATUS UPDATED TO PAID")
         
-            send_mail(
-            subject='Payment Successful',
-            message=f'''
-Hello {transaction.sender_name},
+            
+        subject = "Payment Receipt"
 
-Your payment was successful.
-
-Transaction ID: {transaction.transaction_id}
-Amount Sent: {transaction.amount} {transaction.currency}
-Recipient: {transaction.recipient_name}
-Recipient Gets: {transaction.net_amount} GHS
-
-Thank you for using our service.
-''',
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[transaction.sender_email],
-            fail_silently=False,
+        html_content = render_to_string(
+            'payments/email_receipt.html',
+            {'transaction': transaction}
         )
+
+        text_content = strip_tags(html_content)
+
+        email_message = EmailMultiAlternatives(
+            subject,
+            text_content,
+            settings.EMAIL_HOST_USER,
+            [transaction.sender_email],
+        )
+
+        email_message.attach_alternative(html_content, "text/html")
+        email_message.send()
         
         return render(request, 'payments/payment_success.html', {
             'transaction': transaction

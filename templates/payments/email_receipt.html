@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Receipt</title>
+</head>
+<body style="font-family: Arial, sans-serif; background:#f4f6f9; padding:20px;">
+
+    <div style="max-width:500px; margin:auto; background:#ffffff; padding:20px; border-radius:10px;">
+
+        <h2 style="color:#16a34a; text-align:center;">Payment Successful</h2>
+
+        <p>Hello {{ transaction.sender_name }},</p>
+
+        <p>Your payment has been completed successfully. Below are your transaction details:</p>
+
+        <hr>
+
+        <p><strong>Transaction ID:</strong> {{ transaction.transaction_id }}</p>
+        <p><strong>Recipient:</strong> {{ transaction.recipient_name }}</p>
+        <p><strong>Amount Sent:</strong> {{ transaction.amount }} {{ transaction.currency }}</p>
+        <p><strong>Exchange Rate:</strong> {{ transaction.fx_rate }}</p>
+        <p><strong>Converted:</strong> {{ transaction.converted_amount }} GHS</p>
+        <p><strong>Fee:</strong> {{ transaction.fee }} GHS</p>
+
+        <hr>
+
+        <h3 style="color:#22c55e;">
+            Recipient Gets: {{ transaction.net_amount }} GHS
+        </h3>
+
+        <p style="margin-top:20px;">
+            Thank you for using our service.
+        </p>
+
+    </div>
+
+</body>
+</html>
