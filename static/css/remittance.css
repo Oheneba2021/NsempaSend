@@ -29,6 +29,7 @@ body {
     gap: 10px;
 }
 
+
 .logo_text h3 {
     color: white;
     font-size: 16px;
@@ -103,14 +104,19 @@ body {
 }
 
 .btn-primary:hover {
-    background: #0b5ed7;
+    background: #5c60b9;
 }
 
 /* SUMMARY SECTION */
 .summary-section {
-    background: #5c60b9;
-    padding: 16px;
-    border-radius: 10px;
+     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: var(--white);
+    padding: 35px;
+    border-radius: 20px;
+    border: 2px solid red;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 35px rgba(92, 96, 185, 0.25);
 }
 
 .summary-section h3 {
@@ -144,7 +150,7 @@ body {
 
 .recipient-box h1 {
     font-size: 22px;
-    color: #0d6efd;
+    color: #5c60b9;
 }
 
 /* HORIZONTAL RULE */
