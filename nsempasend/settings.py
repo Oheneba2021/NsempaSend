@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-__a+zoqz6e8^bs$5=e*r6$50_zq!*3haf80yd3eb=2&l!svgd7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -137,6 +137,8 @@ load_dotenv()
 
 PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY")
 PAYSTACK_PUBLIC_KEY = os.getenv("PAYSTACK_PUBLIC_KEY")
+EXCHANGE_RATE_API_KEY = os.getenv("EXCHANGE_RATE_API_KEY")
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 

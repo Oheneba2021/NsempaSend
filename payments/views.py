@@ -8,28 +8,70 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.mail import EmailMultiAlternatives
+from .utils import get_exchange_rate
+from django.http import JsonResponse
 
-# FX rates (MVP - controlled manually)
-FX_RATES = {
-    "EUR": Decimal('14.5'),
-    "GBP": Decimal('17.0'),
-    "USD": Decimal('13.2'),
-}
 
+def get_exchange_rate(currency):
+
+    try:
+
+        url = (
+            f"https://v6.exchangerate-api.com/v6/"
+            f"{settings.EXCHANGE_RATE_API_KEY}/latest/{currency}"
+        )
+
+        response = requests.get(url)
+
+        data = response.json()
+
+        rate = data['conversion_rates']['GHS']
+
+        return Decimal(str(rate))
+
+    except Exception:
+
+        # fallback rates
+        fallback_rates = {
+            "EUR": Decimal('14.5'),
+            "GBP": Decimal('17.0'),
+            "USD": Decimal('13.2'),
+        }
+
+        return fallback_rates.get(currency, Decimal('13.2'))
+
+def get_rate(request):
+
+    currency = request.GET.get('currency')
+
+    rate = get_exchange_rate(currency)
+
+    return JsonResponse({
+        'rate': float(rate)
+    })
 
 def calculate_fee(amount_ghs):
-    return (amount_ghs *  Decimal('0.03')) + Decimal('5')  # 3% + 5 GHS
+
+    return (
+        (amount_ghs * Decimal('0.03')) + Decimal('5')
+    ).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
 
 
 def calculate_transaction(amount, currency):
-    rate = FX_RATES.get(currency, Decimal('13.2'))
 
-    converted_amount = (amount * rate).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
-    fee = calculate_fee(converted_amount).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
-    net_amount = (converted_amount - fee).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+    rate = get_exchange_rate(currency)
+
+    converted_amount = (
+        amount * rate
+    ).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+
+    fee = calculate_fee(converted_amount)
+
+    net_amount = (
+        converted_amount - fee
+    ).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
 
     return rate, converted_amount, fee, net_amount
-
 
 
 def initiate_payment(request):
@@ -74,7 +116,7 @@ def initiate_payment(request):
                 "email": transaction.sender_email,
                 "amount": int((converted_amount * Decimal('100')).quantize(Decimal('1'), rounding=ROUND_HALF_UP)),  # ⚠️ Paystack expects smallest currency unit
                 "reference": str(transaction.transaction_id),
-                "callback_url": "http://127.0.0.1:8000/payment/callback/",
+                "callback_url": f"{request.build_absolute_uri('/payment/callback/')}",
             }
 
             response = requests.post(url, json=data, headers=headers)

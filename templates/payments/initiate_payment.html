@@ -40,14 +40,16 @@
                 </div>
 
                 <div class="form-group">
+                    <label>Currency</label>
+                    {{ form.currency }}
+                </div>
+
+                <div class="form-group">
                     <label>Amount</label>
                     {{ form.amount }}
                 </div>
 
-                <div class="form-group">
-                    <label>Currency</label>
-                    {{ form.currency }}
-                </div>
+                
 
                 <div class="form-group">
                     <label>Payment Reference</label>
@@ -98,27 +100,52 @@
 
 <!-- JS (LIVE CALCULATOR) -->
 <script>
-    const FX_RATES = {
-        EUR: 14.5,
-        GBP: 17.0,
-        USD: 13.2
-    };
+    async function calculate() {
 
-    function calculate() {
-        let amount = parseFloat(document.getElementById("id_amount").value) || 0;
-        let currency = document.getElementById("id_currency").value;
+        let amount =
+            parseFloat(
+                document.getElementById("id_amount").value
+            ) || 0;
 
-        let rate = FX_RATES[currency] || 0;
+        let currency =
+            document.getElementById("id_currency").value;
 
-        let converted = amount * rate;
-        let fee = (converted * 0.03) + 5;
-        let recipient = converted - fee;
+        try {
 
-        document.getElementById("send_amount").innerText = amount + " " + currency;
-        document.getElementById("rate").innerText = rate;
-        document.getElementById("converted").innerText = converted.toFixed(2);
-        document.getElementById("fee").innerText = fee.toFixed(2);
-        document.getElementById("recipient").innerText = recipient.toFixed(2) + " GHS";
+            let response = await fetch(
+                `/get-rate/?currency=${currency}`
+            );
+
+            let data = await response.json();
+
+            let rate = data.rate;
+
+            let converted = amount * rate;
+
+            let fee = (converted * 0.03) + 5;
+
+            let recipient = converted - fee;
+
+            document.getElementById("send_amount").innerText =
+                amount + " " + currency;
+
+            document.getElementById("rate").innerText =
+                rate.toFixed(2);
+
+            document.getElementById("converted").innerText =
+                converted.toFixed(2);
+
+            document.getElementById("fee").innerText =
+                fee.toFixed(2);
+
+            document.getElementById("recipient").innerText =
+                recipient.toFixed(2) + " GHS";
+
+        } catch (error) {
+
+            console.error("FX Error:", error);
+
+        }
     }
 
     document.querySelectorAll("input, select").forEach(el => {

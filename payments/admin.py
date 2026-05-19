@@ -7,6 +7,7 @@ class TransactionAdmin(admin.ModelAdmin):
     list_display = (
         'sender_name',
         'recipient_name',
+        'recipient_contact',
         'amount',
         'currency',
         'fx_rate',
