@@ -142,11 +142,12 @@ EXCHANGE_RATE_API_KEY = os.getenv("EXCHANGE_RATE_API_KEY")
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_HOST = 'nsempaservice.com'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
 
-EMAIL_HOST_USER = 'ohenebayb@gmail.com'
-EMAIL_HOST_PASSWORD = 'fosu fqvn xdmq hzic'
+EMAIL_HOST_USER = 'no-reply@nsempaservice.com'
+EMAIL_HOST_PASSWORD = ',TLZ(4j$PkyP'
 
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = 'NsempaSend <no-reply@nsempaservice.com>'
